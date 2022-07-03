@@ -53,9 +53,16 @@ namespace Assets.Scripts.Logic
                 var targetPosition = new Vector3(tc.x, 1, tc.y);
 
                 var currentRotation = gameObject.transform.eulerAngles;
-                bool temp = currentRotation[1] == 270f && rotationY == 0;
-                var targetRotation = new Vector3(0, temp == true ? 360 : rotationY, 0);
 
+                bool temp = currentRotation[1] == 270f && rotationY == 0;
+                bool temp2 = ((currentRotation[1] >= 0f && currentRotation[1] < 0.1f) || currentRotation[1] == 360f) && rotationY == 270;
+
+                var targetRotation = new Vector3(0, temp == true ? 360 : (temp2 == true ? -90 : rotationY), 0);
+
+                //var targetRotation = new Vector3(0, temp == true ? 360 : rotationY, 0);
+                Debug.Log(temp2);
+                Debug.Log(currentRotation);
+                Debug.Log(targetRotation);
                 var moveTime = 1f / moveSpeed;
                 float t = 0;
                 while (t < moveTime)
@@ -69,14 +76,18 @@ namespace Assets.Scripts.Logic
                 }
 
                 gameObject.transform.position = targetPosition;
-                gameObject.transform.eulerAngles = targetRotation;
+                gameObject.transform.eulerAngles = temp2 == true ? new Vector3(0, 270, 0) : targetRotation;
             }
             else
             {
                 var currentRotation = gameObject.transform.eulerAngles;
                 bool temp = currentRotation[1] == 270f && rotationY == 0;
-                var targetRotation = new Vector3(0, temp == true ? 360 : rotationY, 0);
+                bool temp2 = ((currentRotation[1] >= 0f && currentRotation[1] < 0.1f) || currentRotation[1] == 360f) && rotationY == 270;
 
+                var targetRotation = new Vector3(0, temp == true ? 360 : (temp2 == true ? -90 : rotationY), 0);
+                Debug.Log(temp2);
+                Debug.Log(currentRotation);
+                Debug.Log(targetRotation);
                 var moveTime = 1f / moveSpeed;
                 float t = 0;
                 while (t < moveTime)
@@ -88,7 +99,7 @@ namespace Assets.Scripts.Logic
                     yield return null;
                 }
 
-                gameObject.transform.eulerAngles = targetRotation;
+                gameObject.transform.eulerAngles = temp2 == true ? new Vector3(0, 270, 0) : targetRotation;
             }
 
             isMoving = false;

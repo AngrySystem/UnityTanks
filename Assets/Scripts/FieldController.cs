@@ -136,7 +136,7 @@ public class FieldController : MonoBehaviour
 
     private IEnumerator SpawnEnemy()
     {
-        for (int i = 0; i < 0; i++)
+        for (int i = 0; i < 5; i++)
         {
             Vector2Int current = enemyPositions[UnityEngine.Random.Range(0, enemyPositions.Count)];
 
