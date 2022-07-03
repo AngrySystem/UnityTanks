@@ -24,10 +24,12 @@ public class RestartMenu : MonoBehaviour
         {
             text.text = "You win";
         }
+        Time.timeScale = 0.07f;
     }
 
     public void OnClickButton()
     {
         SceneManager.LoadScene("SampleScene");
+        Time.timeScale = 1;
     }
 }

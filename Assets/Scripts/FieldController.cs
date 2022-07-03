@@ -136,7 +136,7 @@ public class FieldController : MonoBehaviour
 
     private IEnumerator SpawnEnemy()
     {
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < 0; i++)
         {
             Vector2Int current = enemyPositions[UnityEngine.Random.Range(0, enemyPositions.Count)];
 
@@ -151,7 +151,7 @@ public class FieldController : MonoBehaviour
                 var e = enemyGO.GetComponent<EnemyAI>();
                 e.Initialize(enemySpeed, cells, this);
                 cells[current.x, current.y].Occupy(e);
-                yield return new WaitForSeconds(5);
+                yield return new WaitForSeconds(10);
             }
         }
     }

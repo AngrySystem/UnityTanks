@@ -39,6 +39,7 @@ namespace Assets.Scripts.Logic
             direction = delta;
 
             var rotationY = Vector2.SignedAngle(Vector2.up, delta * new Vector2Int(-1, 1));
+            rotationY = rotationY < 0 ? rotationY + 360 : rotationY;
 
             var from = GetCoords();
             var tc = from + delta;
@@ -52,7 +53,8 @@ namespace Assets.Scripts.Logic
                 var targetPosition = new Vector3(tc.x, 1, tc.y);
 
                 var currentRotation = gameObject.transform.eulerAngles;
-                var targetRotation = new Vector3(0, rotationY, 0);
+                bool temp = currentRotation[1] == 270f && rotationY == 0;
+                var targetRotation = new Vector3(0, temp == true ? 360 : rotationY, 0);
 
                 var moveTime = 1f / moveSpeed;
                 float t = 0;
@@ -67,6 +69,25 @@ namespace Assets.Scripts.Logic
                 }
 
                 gameObject.transform.position = targetPosition;
+                gameObject.transform.eulerAngles = targetRotation;
+            }
+            else
+            {
+                var currentRotation = gameObject.transform.eulerAngles;
+                bool temp = currentRotation[1] == 270f && rotationY == 0;
+                var targetRotation = new Vector3(0, temp == true ? 360 : rotationY, 0);
+
+                var moveTime = 1f / moveSpeed;
+                float t = 0;
+                while (t < moveTime)
+                {
+                    t += Time.deltaTime;
+
+                    var f = Mathf.Min(1, 2 * t / moveTime); // вращение в 2 раза бестрее скорости перемещения
+                    gameObject.transform.eulerAngles = currentRotation + f * (targetRotation - currentRotation);
+                    yield return null;
+                }
+
                 gameObject.transform.eulerAngles = targetRotation;
             }
 
